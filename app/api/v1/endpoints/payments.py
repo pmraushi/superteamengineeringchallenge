@@ -17,5 +17,18 @@ def create_plan(
 
 
 @router.post("/plans/{plan_id}/savings")
-def save_money():
-    return {"message": "Money saved successful"}
+def save_money(
+    plan_id: int,
+    savings: SavingsCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    plan = get_payment_plan(db, plan_id)
+    if not plan or plan.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Plan not found or unauthorized")
+    total_saved = add_savings(db, plan_id, savings.amount)
+    if total_saved >= plan.total_amount:
+        # Simulate merchant payout (log for now)
+        print(f"Payout triggered for plan {plan_id}: TZS {plan.total_amount} to merchant")
+        # In a real system, trigger webhook here
+    return {"total_saved": total_saved, "target_reached": total_saved >= plan.total_amount}
