@@ -1,195 +1,56 @@
-## 🧪 Superteam Technical Challenge
+# Tunzaa Payment API (Python)
 
-**Title:** “Ship or Die: Build the Future in a Day”  
-**Timebox:** 6–8 hours  
-**Mode:** Remote, submit within 48 hours of receiving the brief  
-**Evaluation Focus:** Functionality, clarity, architectural decisions, UX choices, and how you think  
+## Overview
+The Tunzaa Payment API is a secure, FastAPI-based backend that enables users to create installment-based payment plans, save money weekly toward a product, and trigger a merchant payout when the savings target is reached. It supports JWT authentication, simulates weekly savings of TZS 5,000 toward a TZS 20,000 product, and includes a webhook for payment completion events. The API is modular, RESTful, and includes unit tests for core flows.
 
+## What I Built
+- **Core Functionality**:
+  - **Payment Plans**: Users can create a payment plan for a product (TZS 20,000) and save TZS 5,000 weekly.
+  - **Savings**: Users add savings to their plan, with automatic payout simulation (logged) when the target is reached.
+  - **Authentication**: JWT-based authentication for secure user access to plans and savings.
+  - **Webhook**: A POST endpoint (`/webhook/payment-completed`) to handle "payment completed" events.
+- **Tech Stack**: FastAPI, SQLAlchemy (SQLite), Pydantic, python-jose, passlib, pytest.
+- **Testing**: Unit tests for authentication (register/login) and payment flows (plan creation, savings, payout triggering).
+- **Documentation**: Interactive Swagger UI at `/docs` for API exploration.
 
-## 🔧 Choose Your Challenge (Based on Role)
+## Assumptions Made
+- **Database**: SQLite is used for simplicity, with an in-memory database for tests. In production, a more robust database like PostgreSQL would be preferred.
+- **Payout Simulation**: Payouts are logged to the console rather than integrated with a real payment gateway, as the challenge focuses on simulation.
+- **Webhook**: The webhook endpoint logs events without signature verification, assuming a trusted source for this prototype. In production, signature verification would be added.
+- **Currency**: All amounts are in TZS (Tanzanian Shillings) as per the challenge example.
+- **Weekly Savings**: The TZS 5,000/week is a fixed example amount, but the API supports flexible savings amounts.
 
+## How to Run
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/pmraushi/superteamengineeringchallenge.git
+   cd superteamengineeringchallenge
+   ```
 
-### 1. Tunzaa Payment API (Python)
+2. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-**Build a secure installment-based payment API that:**
-- Handles user savings toward a product  
-- Triggers a payout to the merchant when savings are complete  
+3. **Set Up Environment Variables**:
+   Create a `.env` file in the root directory:
+   ```env
+   SECRET_KEY=secret-key
+   DATABASE_URL=sqlite:///./tunzaa.db
+   ```
 
-**Tech:** FastAPI or Django  
-**Key Skills:** Auth, financial logic, REST, test coverage  
+4. **Run the Application**:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   The API will be available at `http://localhost:8000`. Access Swagger UI at `http://localhost:8000/docs`.
 
+5. **Run Tests**:
+   ```bash
+   pytest
+   ```
 
-### 2. Tunzaa ERP – Mauzo (PHP/Laravel)
-
-**Create a sales-tracking module for MSMEs that lets users:**
-- Record sales  
-- View recent transactions  
-- *(Bonus)* Manage inventory and export data  
-
-**Tech:** Laravel  
-**Key Skills:** MVC, DB design, CRUD, UX for business tools  
-
-
-### 3. Tunzaa Internal Dashboard (PHP)
-
-**Build a data dashboard showing:**
-- Active users  
-- Sales totals (daily, weekly, monthly)  
-- Top products  
-
-**Tech:** PHP (Laravel/Symfony)  
-**Key Skills:** Data querying, filters, admin UI  
-
-
-### 4. Tunzaa Mobile App (React Native)
-
-**Develop a mobile experience that enables users to:**
-- Track savings progress  
-- Add new savings  
-- *(Bonus)* View insights and celebrate completion  
-
-**Tech:** React Native  
-**Key Skills:** Mobile UX, local state or mock API, animations  
-
-
-## Detailed Challenge Descriptions
-
-### 1. Tunzaa Payment API (Python) – Backend Challenge
-
-**Objective**  
-Design a secure API that allows users to:  
-- Create an installment-based payment plan for a product  
-- Save money weekly toward that plan  
-- Once the full amount is saved, trigger merchant payout
-
-**Requirements**  
-- Use **FastAPI** or **Django Rest Framework**  
-- Implement basic JWT auth  
-- Simulate a user saving TZS 5,000/week toward a product worth TZS 20,000  
-- When target is reached, simulate payout (just log or mock the transaction)  
-- Must include unit tests for at least 2 core flows  
-
-**Bonus**  
-- Implement a webhook for “payment completed” event  
-- Provide a Postman or Swagger doc  
-
-**Evaluation Criteria**  
-- RESTfulness, modularity, clarity of thought  
-- Code structure and test coverage  
-- How you simulate “financial safety”  
-
-
-### 2. Tunzaa ERP – Mauzo (PHP/Laravel) – Backend/Full Stack Challenge
-
-**Objective**  
-Build a lightweight MVP of the _Sales Tracking Module_ for MSMEs.
-
-**Requirements**  
-- Use **Laravel**  
-- Users should be able to:  
-  - Log in  
-  - Record a sale (product, quantity, amount)  
-  - View a dashboard of past 7-day sales  
-- Use a simple SQLite or MySQL DB  
-
-**Bonus**  
-- Add a basic inventory tracker that auto-decreases stock  
-- Add an export to CSV  
-
-**Evaluation Criteria**  
-- MVC understanding, database design, security handling  
-- UI clarity if frontend is included  
-- Reusability of code  
-
-
-### 3. Tunzaa Internal Dashboard (PHP) – Full Stack Challenge
-
-**Objective**  
-Build a metrics dashboard for internal teams to monitor:  
-- Number of active users  
-- Sales value today/this week/this month  
-- Most saved-for products  
-
-**Requirements**  
-- PHP (Laravel or Symfony)  
-- Must include dummy seed data (at least 200 rows)  
-- Data must be filterable by date  
-
-**Bonus**  
-- Chart rendering (e.g., Chart.js)  
-- Basic user role (admin vs. viewer)  
-- Comment system for internal notes on data spikes  
-
-**Evaluation Criteria**  
-- Data handling and querying logic  
-- Dashboard usability  
-- Code scalability  
-
-
-### 4. Tunzaa Mobile App (React Native) – Frontend Challenge
-
-**Objective**  
-Build a mobile flow that lets users:  
-- See their current installment savings  
-- Add to their savings  
-- View payment progress toward a goal  
-
-**Requirements**  
-- Use **React Native** (Expo or CLI)  
-- Create a mock API or use local state with dummy data  
-- Reflect real-world UX (loading states, errors, completion)  
-
-**Bonus**  
-- Simulate an “insight” screen (e.g., “You’re 1 week away…”)  
-- Use animations to show progress  
-
-**Evaluation Criteria**  
-- UI/UX quality, responsiveness, transitions  
-- Code modularity  
-- Simplicity + elegance
-
-
-## 🕒 Repository & Workflow Instructions
-To streamline your setup and submission, please follow these steps:
-
-**Fork This Repository**
-– As soon as you’re ready to begin, fork this GitHub repo to your own account.
-– The repo includes a README.md for setup instructions and requirements specific to your chosen challenge.
-
-**Start and End Time**
-– Note your start time in your first commit message.
-– Record your end time in the final commit message once you’ve completed the challenge.
-
-**Granular Commits**
-– Make small, logical commits reflecting each incremental step (e.g., “add user authentication,” “implement savings endpoint,” “write unit tests for payout flow”).
-
-**Commit History**
-– Ensure your commit history clearly shows your progression from start to finish.
-
-
-## 💬 Submission Checklist
-
-- **GitHub repo** with a README.md that covers:  
-  - What you built  
-  - Any assumptions made  
-  - How to run it  
-- 2–3 sentences on **your design choices**  
-- *(Optional)* Short Loom/video walkthrough (max 5 mins)  
-
-
-## 🧠 Bonus Curveball (Optional)
-
-> *If you were given access to Tunzaa’s entire data engine, what product feature would you ship in 90 days that could unlock 10× user growth or financial health improvement?*  
-
-
-## ⚖️ Scoring Breakdown
-
-| Criteria                       | Points |
-| ------------------------------ | ------ |
-| Completeness                   | 20     |
-| Code Quality & Structure       | 20     |
-| UX & Realism                   | 20     |
-| Creativity & Bonus Features    | 20     |
-| Documentation & Clarity        | 20     |
-
-**Passing score:** 80+  
+## Design Choices
+- **Modular Structure**: The codebase is organized into `api`, `core`, `models`, `schemas`, `crud`, `db`, and `tests` directories to ensure separation of concerns and scalability.
+- **Financial Safety**: JWT authentication, database transactions, and input validation (via Pydantic) ensure secure and consistent financial operations.
+- **Test Coverage**: Focused unit tests for authentication and payment flows to validate core functionality, with an in-memory database to isolate test environments.
