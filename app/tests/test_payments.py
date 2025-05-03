@@ -18,7 +18,7 @@ def test_payment_plan_and_savings(client):
     # Create payment plan (TZS 20,000)
     response = client.post(
         "/api/v1/payments/plans",
-        json={"total_amount": 20000},
+        json={"total_amount": 20000.0},
         headers=headers
     )
     assert response.status_code == 200
@@ -28,7 +28,7 @@ def test_payment_plan_and_savings(client):
     for _ in range(4):
         response = client.post(
             f"/api/v1/payments/plans/{plan_id}/savings",
-            json={"amount": 5000},
+            json={"amount": 5000.0},
             headers=headers
         )
         assert response.status_code == 200
@@ -36,7 +36,7 @@ def test_payment_plan_and_savings(client):
     # Check if target reached
     response = client.post(
         f"/api/v1/payments/plans/{plan_id}/savings",
-        json={"amount": 0},  # Just to check status
+        json={"amount": 0.0},  # Just to check status
         headers=headers
     )
     assert response.json()["target_reached"] is True
